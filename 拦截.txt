@@ -16,7 +16,7 @@ for _, fn in next, getgc(true) do
                 elseif t == "string" then
                     return "validated"
                 elseif t == "table" then
-                    return {}
+                    return {} 
                 else
                     return result
                 end
@@ -25,22 +25,3 @@ for _, fn in next, getgc(true) do
         end
     end
 end
-
-local function hookValidationFunction(functionName)
-    for _, func in next, getgc(true) do
-        if type(func) == "function" then
-            local info = debug.getinfo(func)
-            if info and info.name and info.name:lower() == functionName:lower() then
-                hookfunction(func, function(...)
-                    return true
-                end)
-                print("Hooked " .. functionName .. " -> always true")
-                break
-            end
-        end
-    end
-end
-
-hookValidationFunction("validateCollisions")
-hookValidationFunction("validateMovement")
-hookValidationFunction("validateVelocity")
